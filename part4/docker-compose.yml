@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  book_catalog:
+    build:
+      context: ./book_catalog
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://deakinlab8_2_user:GPSSjl4x1smhSNzdiEXIU7i0mwfJDf10@dpg-crinp4lumphs73cndcng-a.oregon-postgres.render.com/deakinlab8_2
+    depends_on:
+      - postgres
+
+  inventory_management:
+    build:
+      context: ./inventory_management
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    environment:
+      - DATABASE_URL=postgresql://deakinlab8_2_user:GPSSjl4x1smhSNzdiEXIU7i0mwfJDf10@dpg-crinp4lumphs73cndcng-a.oregon-postgres.render.com/deakinlab8_2
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_DB: deakinlab8_2
+      POSTGRES_USER: deakinlab8_2_user
+      POSTGRES_PASSWORD: GPSSjl4x1smhSNzdiEXIU7i0mwfJDf10
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
